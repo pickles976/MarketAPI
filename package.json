@@ -1,0 +1,17 @@
+{
+  "name": "marketapi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "run": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "seabass",
+  "license": "ISC",
+  "dependencies": {
+    "@bytecodealliance/jco": "^0.5.4",
+    "@wasmer/wasi": "^1.2.2"
+  }
+}
