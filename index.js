@@ -1,20 +1,29 @@
 import { MarketWrapper, test } from './pkg/MarketCore.js'
+import { Order, User } from './user.js'
 
 console.log(test())
 
-let market = MarketWrapper.new()
+const market = MarketWrapper.new()
 
-let order = {
-    user_id: "ALICE",
-    item: "CORN",
-    amount: 200,
-    price_per: 12.0
-}
-order = JSON.stringify(order)
+const alice = new User("ALICE")
+alice.addItem("PIKMIN", 20)
+const bob = new User("BOB")
+bob.addFunds(30)
 
-market.sell(order)
-let summary = market.sell(order)
+let aliceSellOrder = new Order(alice, "PIKMIN", "SELL", 10, 2.50)
+let bobBuyOrder = new Order(bob, "PIKMIN", "BUY", 8, 3.0)
+
+console.log(alice.userCanDoOrder(aliceSellOrder))
+console.log(bob.userCanDoOrder(bobBuyOrder))
+
+console.log(aliceSellOrder)
+let summary = market.sell(JSON.stringify(aliceSellOrder))
 console.log(summary)
 
-summary = market.buy(order)
+// summary = JSON.parse(summary)
+// APPLY transaction
+
+
+console.log(bobBuyOrder)
+summary = market.buy(JSON.stringify(bobBuyOrder))
 console.log(summary)
