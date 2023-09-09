@@ -1,4 +1,6 @@
-import { MarketWrapper, test } from './pkg/CRABSHAQ.js'
+import { MarketWrapper, test } from './pkg/MarketCore.js'
+
+console.log(test())
 
 let market = MarketWrapper.new()
 
@@ -9,7 +11,7 @@ let names = ["ALICE", "BOB", "CLYDE", "DOOFUS", "EDGAR", "FRANK", "GOMEZ",
 let items = ["APPLES", "BANANAS", "CORN", "DETERGENT", "EGGS", "FROGS", "GRUEL", 
 "HALO_3", "INCENSE", "JUUL", "KNIVES", "LAVA", "MYCELIUM", "NITROGEN", "OVALTINE", "POGS"]
 
-let start = new Date()
+let start = performance.now()
 
 for (let i = 0; i < 1_000_000; i++ ) {
 
@@ -22,8 +24,6 @@ for (let i = 0; i < 1_000_000; i++ ) {
 
   order = JSON.stringify(order)
 
-  // console.log(order)
-
   if (Math.random() > 0.5) {
     market.sell(order)
   } else {
@@ -32,7 +32,7 @@ for (let i = 0; i < 1_000_000; i++ ) {
  
 }
 
-console.log(`${new Date() - start}ms`)
+console.log(`Completed 1M transactions in ${((performance.now() - start)/1000).toFixed(2)}s`)
 
 function getRandom(array) {
   return array[Math.floor(Math.random()*array.length)]

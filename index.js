@@ -1,4 +1,6 @@
-import { MarketWrapper, test } from './pkg/CRABSHAQ.js'
+import { MarketWrapper, test } from './pkg/MarketCore.js'
+
+console.log(test())
 
 let market = MarketWrapper.new()
 
