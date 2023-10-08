@@ -38,6 +38,7 @@ export class User {
         }
     }
 
+    // TODO: throw a custom exception
     userCanDoOrder(order) {
         if (order.kind == "SELL") {
             return (order.item in this.portfolio && this.portfolio[order.item] >= order.amount)
@@ -47,10 +48,5 @@ export class User {
             return (this.funds >= order.amount * order.price_per)
         }
     }
-
-
-
-
-    
 
 }
