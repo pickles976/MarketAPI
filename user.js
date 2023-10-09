@@ -25,7 +25,6 @@ export class User {
         this.funds = 0
         this.portfolio = {}
         this.activeOrders = {}
-        this.transactionHistory = []
     }
 
     static fromDict(data) {
@@ -33,12 +32,15 @@ export class User {
         user.funds = data["funds"]
         user.portfolio = data["portfolio"]
         user.activeOrders = data["activeOrders"]
-        user.transactionHistory = data["transactionHistory"]
         return user
     }
 
     addFunds(amount) {
-        this.funds = amount
+        this.funds += amount
+    }
+
+    removeFunds(amount) {
+        this.funds -= amount
     }
 
     addItem(item, quantity) {
@@ -47,6 +49,10 @@ export class User {
         } else {
             this.portfolio[item] = quantity
         }
+    }
+
+    removeItem(item, quantity) {
+        this.portfolio[item] -= quantity
     }
 
     // TODO: throw a custom exception

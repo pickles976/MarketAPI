@@ -38,10 +38,34 @@ export class UserDatabase {
         return data.map(item => User.fromDict(JSON.parse(item["body"])))
     }
 
+    processTransactions(item, transactions) {
+        transactions.forEach(transaction => {
+            let buyer = this.select.get(transaction.buyer)
+            buyer = User.fromDict(JSON.parse(buyer["body"]))
+
+            let seller = this.select.get(transaction.seller)
+            seller = User.fromDict(JSON.parse(seller["body"]))
+
+            // Seller remove item, add funds
+            seller.removeItem(item, transaction.amount)
+            seller.addFunds(transaction.amount * transaction.price_per)
+
+            // Buyer remove funds, add item
+            buyer.addItem(item, transaction.amount)
+            buyer.removeFunds(transaction.amount * transaction.price_per)
+
+            // Update database
+            this.upsert.run(seller.id, JSON.stringify(seller))
+            this.upsert.run(buyer.id, JSON.stringify(buyer))
+        })
+    }
+
     processUpdates(updates) {
         updates.forEach(update => {
-            let data = this.select.get(id)
+            let data = this.select.get(update.user_id)
             let user = User.fromDict(JSON.parse(data["body"]))
+            user.applyUpdate(update)
+            this.upsert.run(user.id, JSON.stringify(user))
         })
     }
 
@@ -54,16 +78,16 @@ export class TransactionHistory {
     }
 
     initialize() {
-        const query = this.db.query(`create table if not exists Transactions (TransactionID string, body string);`);
+        const query = this.db.query(`create table if not exists Transactions (TransactionID string PRIMARY KEY, body string);`);
         query.run()
 
-        this.insert = this.db.prepare("INSERT INTO Transactions (TransactionID, body) VALUES ($TransactionID, $body);");
+        this.insert = this.db.prepare("INSERT INTO Transactions (TransactionID, buyer, seller, amount, price_per) VALUES ($TransactionID, $buyer, $seller, $amount, $price_per);");
         this.select = this.db.prepare("SELECT * FROM Transactions WHERE TransactionID == $TransactionID;")
         this.selectAll = this.db.query("SELECT * FROM Transactions;")
     }
 
     insertTransaction(transaction) {
-        return this.insert.run(transaction.id, JSON.stringify(transaction))
+        return this.insert.run(transaction.id, transaction.buyer, transaction.seller, transaction.amount, transaction.price_per)
     }
 
     selectTransaction(id) {

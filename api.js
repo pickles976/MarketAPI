@@ -6,6 +6,7 @@ export class TradingAPI {
     constructor(database, market) {
         this.db = database
         this.market = market
+        // this.transactions = transactions
     }
 
     createUser(username, id=null) {
@@ -39,69 +40,53 @@ export class TradingAPI {
         }
     }
 
-    sell(userID, item, amount, price_per) {
-        // try {
-            const user = this.db.selectUser(userID)
-            const order = new Order(user.id, item, "SELL", amount, price_per, user.id)
-            
-            if (user.userCanDoOrder(order)) {
-                let summary = this.market.sell(JSON.stringify(order))
-                summary = JSON.parse(summary)
-                console.log(summary)
-                
-                // Update with created order
-                if (summary.created !== null){
-                    let created = Order.fromDict(summary.created)
-                    created.item = item
-                    user.activeOrders[created.id] = created
-                    this.db.insertUser(user)
-                }
+    order(userID, kind, item, amount, price_per) {
+        const user = this.db.selectUser(userID)
+        const order = new Order(user.id, item, kind, amount, price_per, user.id)
 
-                // Update transactions
-                // this.db.processTransactions(summary.transactions)
+        if (user.userCanDoOrder(order)) {
+            let summary = null
 
-                // Update active orders
-                this.db.processUpdates(summary.to_update)
+            switch(kind) {
+                case "SELL":
+                    summary = this.market.sell(JSON.stringify(order))
+                    break;
+                case "BUY":
+                    summary = this.market.buy(JSON.stringify(order))
+                    break;
+                default:
+                    throw new Error("Order type not recognized")
             }
-        // } catch (error) {
-        //     console.error(`Could not perform transaction, error: ${error}`)
-        // }
+
+            this._processOrderSummary(user, item, summary)
+        }
     }
 
-    buy(userID, item, amount, price_per) {
-        // try {
-            const user = this.db.selectUser(userID)
-            const order = new Order(user.id, item, "BUY", amount, price_per, user.id)
-            
-            if (user.userCanDoOrder(order)) {
-                let summary = this.market.buy(JSON.stringify(order))
-                summary = JSON.parse(summary)
-                console.log(summary)
+    _processOrderSummary(user, item, summary) {
+        summary = JSON.parse(summary)
                 
-                // Update with created order
-                if (summary.created !== null){
-                    let created = Order.fromDict(summary.created)
-                    created.item = item
-                    user.activeOrders[created.id] = created
-                    this.db.insertUser(user)
-                }
+        // Update with created order
+        if (summary.created !== null){
+            let created = Order.fromDict(summary.created)
+            created.item = item
+            user.activeOrders[created.id] = created
+            this.db.insertUser(user)
+        }
 
-                // Update transactions
-                // this.db.processTransactions(summary.transactions)
+        // Update transactions
+        this.db.processTransactions(item, summary.transactions)
 
-                // Update active orders
-                this.db.processUpdates(summary.to_update)
-            }
-        // } catch (error) {
-        //     console.error(`Could not perform transaction, error: ${error}`)
-        // }
+        // Update active orders
+        this.db.processUpdates(summary.to_update)
     }
 
     showAllUsers() {
         return this.db.selectAllUsers()
     }
 
-
+    getUser(id) {
+        return this.db.selectUser(id)
+    }
 
 
 }
