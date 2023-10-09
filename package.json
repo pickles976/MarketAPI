@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "@bytecodealliance/jco": "^0.5.4",
-    "@wasmer/wasi": "^1.2.2"
+    "@wasmer/wasi": "^1.2.2",
+    "uuid": "^9.0.1"
   }
 }

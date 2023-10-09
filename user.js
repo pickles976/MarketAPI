@@ -1,12 +1,14 @@
+import { v4 as uuidv4 } from 'uuid';
+
 export class Order {
 
     static fromDict(data) {
-        return Order(data["user_id"], data["item"], data["kind"], data["amount"], data["price_per"], data["id"])
+        return new Order(data["user_id"], data["item"], data["kind"], data["amount"], data["price_per"], data["id"])
     }
 
-    constructor(user, item, kind, amount, price_per, id = null){
+    constructor(user_id, item, kind, amount, price_per, id = null){
         this.id = id
-        this.user_id = user.name
+        this.user_id = user_id
         this.item = item
         this.kind = kind
         this.amount = amount
@@ -17,13 +19,22 @@ export class Order {
 
 export class User {
 
-    constructor(name) {
+    constructor(name, id=null) {
         this.name = name
-        this.id = null
+        this.id = id === null ? uuidv4() : id
         this.funds = 0
         this.portfolio = {}
         this.activeOrders = {}
         this.transactionHistory = []
+    }
+
+    static fromDict(data) {
+        let user = new User(data["name"], data["id"])
+        user.funds = data["funds"]
+        user.portfolio = data["portfolio"]
+        user.activeOrders = data["activeOrders"]
+        user.transactionHistory = data["transactionHistory"]
+        return user
     }
 
     addFunds(amount) {
@@ -46,6 +57,17 @@ export class User {
 
         if (order.kind == "BUY") {
             return (this.funds >= order.amount * order.price_per)
+        }
+    }
+
+    applyUpdate(update) {
+        let order = this.activeOrders[update.id]
+        order.amount = update.amount
+
+        if (order.amount > 0) {
+            this.activeOrders[update.id] = order
+        } else {
+            delete this.activeOrders[update.id]
         }
     }
 

@@ -11,8 +11,8 @@ const bob = new User("BOB")
 bob.addFunds(30)
 
 // Create orders
-let aliceSellOrder = new Order(alice, "PIKMIN", "SELL", 10, 2.50)
-let bobBuyOrder = new Order(bob, "PIKMIN", "BUY", 8, 3.0)
+let aliceSellOrder = new Order(alice.id, "PIKMIN", "SELL", 10, 2.50)
+let bobBuyOrder = new Order(bob.id, "PIKMIN", "BUY", 8, 3.0)
 
 // Verify users can perform their transactions
 console.log(alice.userCanDoOrder(aliceSellOrder))
