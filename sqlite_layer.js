@@ -69,6 +69,8 @@ export class UserDatabase {
         })
     }
 
+    
+
 }
 
 export class TransactionHistory {

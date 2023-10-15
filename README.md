@@ -43,8 +43,10 @@ https://bun.sh/docs/api/sqlite
 
 ## TODO
 
-- [ ] Let people query the ledger
+- [x] Let people query the ledger
 - [ ] Let people cancel orders
+
+- [ ] Switch to typescript
 
 - [ ] Add timestamps to transaction history
 - [ ] Query transactions by timestamp, user, item type

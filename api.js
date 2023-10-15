@@ -88,5 +88,30 @@ export class TradingAPI {
         return this.db.selectUser(id)
     }
 
+    queryLedger(item) {
+        return this.market.query_ledger(item)
+    }
+
+    cancelOrder(order) {
+        let item = order.item
+        delete order["item"]
+        let response = JSON.parse(this.market.cancel_order(item, JSON.stringify(order)))
+        if (response['status'] === "SUCCESS") {
+            // TODO: can this be done more uhhh, elegantly?
+            order.amount = -1 // Setting order amount to zero will remove it from the player's active orders
+            this.db.processUpdates([order])
+        } else {
+            console.error(response)
+        }
+    }
+
+    getAsk() {
+        console.error("Not Implemented!")
+    }
+
+    getBid() {
+        console.error("Not Implemented!")
+    }
+
 
 }
