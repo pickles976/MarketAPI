@@ -1,5 +1,5 @@
-import { MarketWrapper, test } from './pkg/MarketCore.js'
-import { Order, User } from './user.js'
+import { MarketWrapper, test } from '../pkg/MarketCore.js'
+import { Order, User } from '../src/user.js'
 
 console.log(test())
 
@@ -10,20 +10,20 @@ alice.addItem("PIKMIN", 20)
 const bob = new User("BOB")
 bob.addFunds(30)
 
-let aliceSellOrder = new Order(alice, "PIKMIN", "SELL", 10, 2.50)
-let bobBuyOrder = new Order(bob, "PIKMIN", "BUY", 8, 3.0)
+// Create orders
+let aliceSellOrder = new Order(alice.id, "PIKMIN", "SELL", 10, 2.50)
+let bobBuyOrder = new Order(bob.id, "PIKMIN", "BUY", 8, 3.0)
 
+// Verify users can perform their transactions
 console.log(alice.userCanDoOrder(aliceSellOrder))
 console.log(bob.userCanDoOrder(bobBuyOrder))
 
+// Post first order
 console.log(aliceSellOrder)
 let summary = market.sell(JSON.stringify(aliceSellOrder))
 console.log(summary)
 
-// summary = JSON.parse(summary)
-// APPLY transaction
-
-
+// Post second order
 console.log(bobBuyOrder)
 summary = market.buy(JSON.stringify(bobBuyOrder))
 console.log(summary)

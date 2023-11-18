@@ -1,7 +1,7 @@
-import { TradingAPI } from "./api";
-import { MarketWrapper } from "./pkg/MarketCore";
-import { UserDatabase } from "./sqlite_layer"
-import { Order } from "./user"
+import { TradingAPI } from "../src/api";
+import { MarketWrapper } from "../pkg/MarketCore";
+import { UserDatabase } from "../src/sqlite_layer"
+import { Order } from "../src/user"
 
 const userDB = new UserDatabase(true)
 userDB.initialize()

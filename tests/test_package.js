@@ -1,4 +1,4 @@
-import { MarketWrapper, test } from './pkg/MarketCore.js'
+import { MarketWrapper, test } from '../pkg/MarketCore.js'
 
 console.log(test())
 

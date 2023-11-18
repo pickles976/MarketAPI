@@ -1,5 +1,7 @@
 # marketapi
 
+## Installation
+
 To install dependencies:
 
 ```bash
@@ -15,6 +17,18 @@ bun run index.js
 This project was created using `bun init` in bun v1.0.0. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
 
 https://bun.sh/docs/api/sqlite
+
+## Architecture
+
+1. Market Engine
+2. User/portfolio database
+3. Market API
+
+The Market Engine is a hash table of ledgers, each ledger holds buy and sell orders. 
+
+The User/Portfolio database is a simple object that acts as a key/value store of User objects. The one I am using runs SQLite under the hood, but it could also just be a js object that holds everything in memory.
+
+The Market API is an object that exposes all the functionality of a market using a combination of the ledgers and database. It is set up like a service layer pattern so you can just wrap it in a REST API.
 
 ## Info
 
@@ -44,9 +58,15 @@ https://bun.sh/docs/api/sqlite
 ## TODO
 
 - [x] Let people query the ledger
-- [ ] Let people cancel orders
+- [x] Let people cancel orders
+- [ ] Query bid and ask prices
+
+- [ ] Use sqlite to guarantee atomicity
+- [ ] Create decorator? [https://www.geeksforgeeks.org/what-are-decorators-and-how-are-they-used-in-javascript/]
+- [ ] https://bun.sh/docs/api/sqlite#transactions
 
 - [ ] Switch to typescript
+- [ ] Organize repository
 
 - [ ] Add timestamps to transaction history
 - [ ] Query transactions by timestamp, user, item type
@@ -59,6 +79,7 @@ https://bun.sh/docs/api/sqlite
 - [ ] Unit tests
 - [ ] Load tests
 - [ ] Load tests on Pi
+- [ ] npm install wasm pkg
 
 
 ## End Goal

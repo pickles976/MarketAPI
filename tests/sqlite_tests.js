@@ -1,5 +1,5 @@
-import { User } from "./user";
-import { UserDatabase } from "./sqlite_layer"
+import { User } from "../src/user";
+import { UserDatabase } from "../src/sqlite_layer"
 
 let alice = new User("ALICE")
 alice.id = "1234"

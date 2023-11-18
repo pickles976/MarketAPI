@@ -3,12 +3,19 @@ import { User } from "./user";
 
 
 export class UserDatabase {
+    /**
+     * A simple wrapper around a sqlite database.
+     * @param {boolean} memory If sqlite database should live in memory or not
+     */
 
     constructor(memory=false){
         this.db = memory ? new Database(":memory:") : new Database("db.sqlite", {create: true})
     }
 
     initialize() {
+        /**
+         * Create tables and prepare SQL statements
+         */
         const query = this.db.query(`create table if not exists Users (UserID string PRIMARY KEY, body string);`);
         query.run()
 
@@ -20,7 +27,6 @@ export class UserDatabase {
     }
 
     insertUser(user) {
-        // return this.insert.run(user.id, JSON.stringify(user))
         return this.upsert.run(user.id, JSON.stringify(user))
     }
 
@@ -68,8 +74,6 @@ export class UserDatabase {
             this.upsert.run(user.id, JSON.stringify(user))
         })
     }
-
-    
 
 }
 
