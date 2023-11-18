@@ -24,6 +24,10 @@ api.addFunds("2", 3000)
 
 // Transact
 api.order("0", "SELL", "WHEAT", 50, 2.50)
+
+// Confirm Alice's Wheat is locked up in a transaction
+console.assert(api.showAllUsers()[0].portfolio["WHEAT"] === 50, "%o", {errorMsg})
+
 api.order("1", "BUY", "WHEAT", 20, 3.0)
 api.order("2", "BUY", "WHEAT", 40, 4.0)
 
@@ -31,6 +35,9 @@ api.order("2", "BUY", "WHEAT", 40, 4.0)
 // User 2 should have an order to BUY 10 WHEAT at 4.0
 let user_2_order = Object.values(api.showAllUsers()[2].activeOrders)[0]
 console.assert(user_2_order.item === "WHEAT" && user_2_order.amount === 10 && user_2_order.price_per === 4.0, "%o", { errorMsg });
+
+// User 2 should still have 40 currency locked away in their order. 3000 - (4.0 * 40) = 2840.0
+console.assert(api.showAllUsers()[2].funds == 2840.0, "%o", { errorMsg });
 
 // Query the Wheat ledger, should see user 2 BUY 10 WHEAT at 4.0
 let wheat_ledger = JSON.parse(api.queryLedger("WHEAT"))
@@ -68,6 +75,9 @@ console.assert(api.queryLedger("WHEAT") === '{"buy_orders":[],"sell_orders":[]}'
 
 // User 2 should no longer have any outstanding orders
 console.assert(JSON.stringify(api.getUser("2").activeOrders) === "{}", "%o", { errorMsg })
+
+// User 2 should be credited back 40 currency
+console.assert(api.showAllUsers()[2].funds == 2880.0, "%o", { errorMsg });
 
 console.log("Tests complete")
 

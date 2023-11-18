@@ -69,7 +69,7 @@ export class UserDatabase {
         updates.forEach(update => {
             let data = this.select.get(update.user_id)
             let user = User.fromDict(JSON.parse(data["body"]))
-            user.applyUpdate(update)
+            user.applyOrderUpdate(update)
             this.upsert.run(user.id, JSON.stringify(user))
         })
     }

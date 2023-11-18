@@ -66,7 +66,7 @@ export class User {
         }
     }
 
-    applyUpdate(update) {
+    applyOrderUpdate(update) {
         let order = this.activeOrders[update.id]
         order.amount = update.amount
 

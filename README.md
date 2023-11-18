@@ -60,7 +60,8 @@ The Market API is an object that exposes all the functionality of a market using
 - [x] Let people query the ledger
 - [x] Let people cancel orders
 - [x] Query bid and ask prices
-- [ ] Test Bid and Ask
+- [x] User funds and items should be tied up in orders
+- [x] Transactions should be filled at the bid price
 
 - [ ] Switch to typescript
 - [x] Organize repository
@@ -73,7 +74,10 @@ The Market API is an object that exposes all the functionality of a market using
 - [ ] Allow depedency injection for API (different market engines, transaction stores, and databases)
 - [ ] REST endpoints for deployment
 
-- [ ] Unit tests
+- [ ] Unit tests (user.js)
+- [ ] SQLite level tests
+- [ ] Service layer tests (api.py)
+- [ ] Integration tests
 - [ ] Load tests
 - [ ] Test for double-spend
 - [ ] Load tests on Pi

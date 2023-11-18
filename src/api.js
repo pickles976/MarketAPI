@@ -64,11 +64,19 @@ export class TradingAPI {
     _processOrderSummary(user, item, summary) {
         summary = JSON.parse(summary)
                 
-        // Update with created order
+        // Update user with created order
         if (summary.created !== null){
             let created = Order.fromDict(summary.created)
             created.item = item
             user.activeOrders[created.id] = created
+
+            // credit user
+            if (created.kind === "BUY") {
+                user.removeFunds(created.amount * created.price_per)
+            } else {
+                user.removeItem(created.item, created.amount)
+            }
+    
             this.db.insertUser(user)
         }
 
@@ -96,8 +104,13 @@ export class TradingAPI {
         delete order["item"]
         let response = JSON.parse(this.market.cancel_order(item, JSON.stringify(order)))
         if (response['status'] === "SUCCESS") {
-            // TODO: can this be done more uhhh, elegantly?
-            order.amount = -1 // Setting order amount to zero will remove it from the player's active orders
+            // Refund user
+            let user = this.db.selectUser(order.user_id)
+            user.addFunds(order.price_per * order.amount)
+            this.db.insertUser(user)
+
+            // Remove order from user account
+            order.amount = 0 // Setting order amount to zero will remove it from the player's active orders
             this.db.processUpdates([order])
         } else {
             console.error(response)
