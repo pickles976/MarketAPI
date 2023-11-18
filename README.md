@@ -59,27 +59,30 @@ The Market API is an object that exposes all the functionality of a market using
 
 - [x] Let people query the ledger
 - [x] Let people cancel orders
-- [ ] Query bid and ask prices
+- [x] Query bid and ask prices
+- [ ] Test Bid and Ask
+
+- [ ] Switch to typescript
+- [x] Organize repository
+
+- [ ] Add timestamps to transaction history
+- [ ] Query transactions by timestamp, user, item type
+- [x] Query the ledger for current prices
+
+- [ ] Separate concerns out (Market, UserDatabase, TransactionDatabase)
+- [ ] Allow depedency injection for API (different market engines, transaction stores, and databases)
+- [ ] REST endpoints for deployment
+
+- [ ] Unit tests
+- [ ] Load tests
+- [ ] Test for double-spend
+- [ ] Load tests on Pi
+- [ ] npm install wasm pkg
 
 - [ ] Use sqlite to guarantee atomicity
 - [ ] Create decorator? [https://www.geeksforgeeks.org/what-are-decorators-and-how-are-they-used-in-javascript/]
 - [ ] https://bun.sh/docs/api/sqlite#transactions
 
-- [ ] Switch to typescript
-- [ ] Organize repository
-
-- [ ] Add timestamps to transaction history
-- [ ] Query transactions by timestamp, user, item type
-- [ ] Query the ledger for current prices
-
-- [ ] Separate concerns out (Market, UserDatabase, TransactionDatabase)
-- [ ] Allow depedency injection for API
-- [ ] REST endpoints for deployment
-
-- [ ] Unit tests
-- [ ] Load tests
-- [ ] Load tests on Pi
-- [ ] npm install wasm pkg
 
 
 ## End Goal

@@ -1,7 +1,6 @@
 import { Database } from "bun:sqlite";
 import { User } from "./user";
 
-
 export class UserDatabase {
     /**
      * A simple wrapper around a sqlite database.

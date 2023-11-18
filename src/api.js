@@ -1,6 +1,5 @@
 import { Order, User } from "./user"
 
-
 export class TradingAPI {
 
     constructor(database, market) {
@@ -105,12 +104,12 @@ export class TradingAPI {
         }
     }
 
-    getAsk() {
-        console.error("Not Implemented!")
+    getAsk(item) {
+        return this.market.get_best_selling_price(item)
     }
 
-    getBid() {
-        console.error("Not Implemented!")
+    getBid(item) {
+        return this.market.get_best_buying_price(item)
     }
 
 
