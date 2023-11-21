@@ -66,6 +66,10 @@ The Market API is an object that exposes all the functionality of a market using
 - [ ] Switch to typescript
 - [x] Organize repository
 
+- [ ] Dump Ledger to JSON in Rust
+- [ ] Support JSON dump of Ledger object in wasm
+- [ ] Test from Bun
+
 - [ ] Add timestamps to transaction history
 - [ ] Query transactions by timestamp, user, item type
 - [x] Query the ledger for current prices

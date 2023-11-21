@@ -1,5 +1,6 @@
-import { Database } from "bun:sqlite";
-import { User } from "./user";
+//@ts-nocheck
+import { Database, Statement } from "bun:sqlite";
+import { Order, User } from "./user";
 
 export class UserDatabase {
     /**
@@ -7,10 +8,17 @@ export class UserDatabase {
      * @param {boolean} memory If sqlite database should live in memory or not
      */
 
+    db : Database
+    insert : Statement
+    upsert: Statement
+    select: Statement
+    selectAll: Statement
+
     constructor(memory=false){
         this.db = memory ? new Database(":memory:") : new Database("db.sqlite", {create: true})
     }
 
+    // TODO: just move this to the constructor
     initialize() {
         /**
          * Create tables and prepare SQL statements
@@ -19,13 +27,12 @@ export class UserDatabase {
         query.run()
 
         this.insert = this.db.prepare("INSERT INTO Users (UserID, body) VALUES ($UserID, $body);");
-        this.upsert = this.db.prepare(`INSERT INTO Users (UserID, body) VALUES ($UserID, $body) 
-        ON CONFLICT (UserID) DO UPDATE SET body=$body;`)
+        this.upsert = this.db.prepare(`INSERT INTO Users (UserID, body) VALUES ($UserID, $body) ON CONFLICT (UserID) DO UPDATE SET body=$body;`)
         this.select = this.db.prepare("SELECT * FROM Users WHERE UserID == $UserID;")
         this.selectAll = this.db.query("SELECT * FROM Users;")
     }
 
-    insertUser(user) {
+    insertUser(user: User) {
         return this.upsert.run(user.id, JSON.stringify(user))
     }
 
@@ -33,17 +40,20 @@ export class UserDatabase {
     //     return this.
     // }
 
-    selectUser(id) {
+    selectUser(id: string) {
         let data = this.select.get(id)
+        //@ts-ignore
         return User.fromDict(JSON.parse(data["body"]))
     }
 
     selectAllUsers() {
         let data = this.selectAll.all()
+        //@ts-ignore
         return data.map(item => User.fromDict(JSON.parse(item["body"])))
     }
 
-    processTransactions(item, transactions) {
+    // TODO: create a transaction object and initialize from dict
+    processTransactions(item: string, transactions: any[]) {
         transactions.forEach(transaction => {
             let buyer = this.select.get(transaction.buyer)
             buyer = User.fromDict(JSON.parse(buyer["body"]))
@@ -65,7 +75,7 @@ export class UserDatabase {
         })
     }
 
-    processUpdates(updates) {
+    processUpdates(updates: any[]) {
         updates.forEach(update => {
             let data = this.select.get(update.user_id)
             let user = User.fromDict(JSON.parse(data["body"]))
@@ -77,6 +87,11 @@ export class UserDatabase {
 }
 
 export class TransactionHistory {
+
+    db : Database
+    insert: Statement
+    select: Statement
+    selectAll: Statement
 
     constructor(memory=false){
         this.db = memory ? new Database(":memory:") : new Database("db.sqlite", {create: true})
@@ -91,11 +106,11 @@ export class TransactionHistory {
         this.selectAll = this.db.query("SELECT * FROM Transactions;")
     }
 
-    insertTransaction(transaction) {
+    insertTransaction(transaction: any) {
         return this.insert.run(transaction.id, transaction.buyer, transaction.seller, transaction.amount, transaction.price_per)
     }
 
-    selectTransaction(id) {
+    selectTransaction(id: string) {
         return this.select.run(id)
     }
 
