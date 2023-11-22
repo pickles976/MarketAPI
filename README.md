@@ -63,15 +63,22 @@ The Market API is an object that exposes all the functionality of a market using
 - [x] User funds and items should be tied up in orders
 - [x] Transactions should be filled at the bid price
 
-- [ ] Switch to typescript
+- [x] Switch to typescript
+- [x] fix import errors
+- [x] Type aliasing for {[key: string]: string}
+- [x] Abstract base class for UserDatabase and TransactionDatabase
 - [x] Organize repository
+
+- [ ] Dump Ledger to JSON in Rust
+- [ ] Support JSON dump of Ledger object in wasm
+- [ ] Test from Bun
 
 - [ ] Add timestamps to transaction history
 - [ ] Query transactions by timestamp, user, item type
 - [x] Query the ledger for current prices
 
-- [ ] Separate concerns out (Market, UserDatabase, TransactionDatabase)
-- [ ] Allow depedency injection for API (different market engines, transaction stores, and databases)
+- [x] Separate concerns out (Market, UserDatabase, TransactionDatabase)
+- [x] Allow depedency injection for API (different market engines, transaction stores, and databases)
 - [ ] REST endpoints for deployment
 
 - [ ] Unit tests (user.js)
@@ -83,10 +90,8 @@ The Market API is an object that exposes all the functionality of a market using
 - [ ] Load tests on Pi
 - [ ] npm install wasm pkg
 
-- [ ] Use sqlite to guarantee atomicity
-- [ ] Create decorator? [https://www.geeksforgeeks.org/what-are-decorators-and-how-are-they-used-in-javascript/]
-- [ ] https://bun.sh/docs/api/sqlite#transactions
-
+- [ ] Add transactionality to the market engine core so that we can undo transactions if we encounter a failure
+- [ ] Try out alternative backends for user database that support transactionality
 
 
 ## End Goal
@@ -94,7 +99,7 @@ The Market API is an object that exposes all the functionality of a market using
 One-click deploy
 
 ```shell
-bun index.js
+bun market-server.js
 ```
 
 Just hook up to your pre-existing API via the REST endpoints

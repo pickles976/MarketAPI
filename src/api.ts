@@ -1,14 +1,21 @@
-import { Order, User } from "./user"
+import { Order } from "./value_objects/order"
+import { OrderRequest } from "./value_objects/order_request"
+import { Summary } from "./value_objects/summary"
+import { User } from "./value_objects/user"
 
 export class TradingAPI {
 
-    constructor(database, market) {
+    db : any
+    market: any
+
+    // TODO: abstract base class for database and market
+    constructor(database: any, market: any) {
         this.db = database
         this.market = market
         // this.transactions = transactions
     }
 
-    createUser(username, id=null) {
+    createUser(username: string, id=null): User | null {
         try {
             const newUser = new User(username, id)
             this.db.insertUser(newUser)
@@ -19,7 +26,7 @@ export class TradingAPI {
         }
     }
 
-    addItem(userID, item, quantity) {
+    addItem(userID: string, item: string, quantity: number) {
         try {
             const user = this.db.selectUser(userID)
             user.addItem(item, quantity)
@@ -29,7 +36,7 @@ export class TradingAPI {
         }
     }
 
-    addFunds(userID, quantity) {
+    addFunds(userID: string, quantity: number) {
         try {
             const user = this.db.selectUser(userID)
             user.addFunds(quantity)
@@ -39,9 +46,9 @@ export class TradingAPI {
         }
     }
 
-    order(userID, kind, item, amount, price_per) {
+    placeOrder(userID: string, kind: string, item: string, amount: number, price_per: number) {
         const user = this.db.selectUser(userID)
-        const order = new Order(user.id, item, kind, amount, price_per, user.id)
+        const order = new OrderRequest(user.id, item, kind, amount, price_per)
 
         if (user.userCanDoOrder(order)) {
             let summary = null
@@ -61,12 +68,12 @@ export class TradingAPI {
         }
     }
 
-    _processOrderSummary(user, item, summary) {
-        summary = JSON.parse(summary)
+    _processOrderSummary(user: User, item: string, _summary: string) : void {
+        const summary = JSON.parse(_summary) as Summary
                 
         // Update user with created order
         if (summary.created !== null){
-            let created = Order.fromDict(summary.created)
+            let created = summary.created
             created.item = item
             user.activeOrders[created.id] = created
 
@@ -87,20 +94,21 @@ export class TradingAPI {
         this.db.processUpdates(summary.to_update)
     }
 
-    showAllUsers() {
+    showAllUsers() : string {
         return this.db.selectAllUsers()
     }
 
-    getUser(id) {
+    getUser(id: string) : string {
         return this.db.selectUser(id)
     }
 
-    queryLedger(item) {
+    queryLedger(item: string) : string {
         return this.market.query_ledger(item)
     }
 
-    cancelOrder(order) {
+    cancelOrder(order: Order) {
         let item = order.item
+        //@ts-ignore
         delete order["item"]
         let response = JSON.parse(this.market.cancel_order(item, JSON.stringify(order)))
         if (response['status'] === "SUCCESS") {
@@ -117,11 +125,11 @@ export class TradingAPI {
         }
     }
 
-    getAsk(item) {
+    getAsk(item: string) {
         return this.market.get_best_selling_price(item)
     }
 
-    getBid(item) {
+    getBid(item: string) {
         return this.market.get_best_buying_price(item)
     }
 

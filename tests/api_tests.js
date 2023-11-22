@@ -1,12 +1,11 @@
 import { TradingAPI } from "../src/api";
 import { MarketWrapper } from "../pkg/MarketCore";
-import { UserDatabase } from "../src/sqlite_layer"
-import { Order } from "../src/user"
+import { UserDatabase } from "../src/user_database"
+import { Order } from "../src/value_objects/order"
 
 const errorMsg = "Assertion failed!";
 
 const userDB = new UserDatabase(true)
-userDB.initialize()
 
 const market = MarketWrapper.new()
 
@@ -23,13 +22,13 @@ api.addFunds("1", 2000)
 api.addFunds("2", 3000)
 
 // Transact
-api.order("0", "SELL", "WHEAT", 50, 2.50)
+api.placeOrder("0", "SELL", "WHEAT", 50, 2.50)
 
 // Confirm Alice's Wheat is locked up in a transaction
 console.assert(api.showAllUsers()[0].portfolio["WHEAT"] === 50, "%o", {errorMsg})
 
-api.order("1", "BUY", "WHEAT", 20, 3.0)
-api.order("2", "BUY", "WHEAT", 40, 4.0)
+api.placeOrder("1", "BUY", "WHEAT", 20, 3.0)
+api.placeOrder("2", "BUY", "WHEAT", 40, 4.0)
 
 // Show users
 // User 2 should have an order to BUY 10 WHEAT at 4.0

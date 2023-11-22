@@ -1,0 +1,1 @@
+export type RustDict = {[key: string]: string}
