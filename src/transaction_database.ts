@@ -1,4 +1,14 @@
 import { Database, Statement } from "bun:sqlite";
+import { RustDict } from "./custom_types";
+
+export abstract class AbstractTransactionDatabase {
+
+    abstract insertTransaction(transaction: any) : void;
+
+    abstract selectTransaction(id: string): RustDict;
+
+    abstract selectAllTransactions(): RustDict;
+}
 
 
 export class TransactionHistory {

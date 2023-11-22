@@ -1,4 +1,3 @@
-import { MarketWrapper } from "../pkg/MarketCore"
 import { Order } from "./value_objects/order"
 import { OrderRequest } from "./value_objects/order_request"
 import { Summary } from "./value_objects/summary"
@@ -47,7 +46,7 @@ export class TradingAPI {
         }
     }
 
-    order(userID: string, kind: string, item: string, amount: number, price_per: number) {
+    placeOrder(userID: string, kind: string, item: string, amount: number, price_per: number) {
         const user = this.db.selectUser(userID)
         const order = new OrderRequest(user.id, item, kind, amount, price_per)
 
@@ -69,7 +68,7 @@ export class TradingAPI {
         }
     }
 
-    _processOrderSummary(user: User, item: string, _summary: string) {
+    _processOrderSummary(user: User, item: string, _summary: string) : void {
         const summary = JSON.parse(_summary) as Summary
                 
         // Update user with created order
@@ -95,15 +94,15 @@ export class TradingAPI {
         this.db.processUpdates(summary.to_update)
     }
 
-    showAllUsers() {
+    showAllUsers() : string {
         return this.db.selectAllUsers()
     }
 
-    getUser(id: string) {
+    getUser(id: string) : string {
         return this.db.selectUser(id)
     }
 
-    queryLedger(item: string) {
+    queryLedger(item: string) : string {
         return this.market.query_ledger(item)
     }
 

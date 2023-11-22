@@ -1,3 +1,5 @@
+import { RustDict } from "../custom_types"
+
 export class OrderRequest {
     /**
      * Javascript object for a non-yet-created Order
@@ -17,7 +19,7 @@ export class OrderRequest {
         this.price_per = price_per
     }
 
-    static fromDict(data: {[key: string]: string}) : OrderRequest {
+    static fromDict(data: RustDict) : OrderRequest {
         return new OrderRequest(data["user_id"], data["item"], data["kind"], parseInt(data["amount"]), parseFloat(data["price_per"]))
     }
 

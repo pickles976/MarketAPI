@@ -1,3 +1,5 @@
+import { RustDict } from "../custom_types"
+
 export class Transaction {
     /**
      * Class representing a transaction that occured
@@ -15,7 +17,7 @@ export class Transaction {
         this.price_per = price_per
     }
 
-    static fromDict(data: {[key: string]: string}) : Transaction {
+    static fromDict(data: RustDict) : Transaction {
         return new Transaction(data["buyer"], data["seller"], parseInt(data["amount"]), parseFloat(data["price_per"]))
     }
 }
