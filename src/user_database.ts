@@ -1,6 +1,6 @@
-//@ts-nocheck
 import { Database, Statement } from "bun:sqlite";
-import { Order, User } from "./user";
+import { User } from "./value_objects/user";
+import { Transaction } from "./value_objects/transaction";
 
 export class UserDatabase {
     /**
@@ -16,13 +16,7 @@ export class UserDatabase {
 
     constructor(memory=false){
         this.db = memory ? new Database(":memory:") : new Database("db.sqlite", {create: true})
-    }
 
-    // TODO: just move this to the constructor
-    initialize() {
-        /**
-         * Create tables and prepare SQL statements
-         */
         const query = this.db.query(`create table if not exists Users (UserID string PRIMARY KEY, body string);`);
         query.run()
 
@@ -41,25 +35,22 @@ export class UserDatabase {
     // }
 
     selectUser(id: string) {
-        let data = this.select.get(id)
-        //@ts-ignore
+        let data = this.select.get(id) as {[key: string]: string}
         return User.fromDict(JSON.parse(data["body"]))
     }
 
     selectAllUsers() {
-        let data = this.selectAll.all()
-        //@ts-ignore
+        let data = this.selectAll.all() as {[key: string]: string}[]
         return data.map(item => User.fromDict(JSON.parse(item["body"])))
     }
 
-    // TODO: create a transaction object and initialize from dict
-    processTransactions(item: string, transactions: any[]) {
+    processTransactions(item: string, transactions: Transaction[]) {
         transactions.forEach(transaction => {
-            let buyer = this.select.get(transaction.buyer)
-            buyer = User.fromDict(JSON.parse(buyer["body"]))
+            const buyer_dict = this.select.get(transaction.buyer) as {[key: string]: string}
+            let buyer = User.fromDict(JSON.parse(buyer_dict["body"]))
 
-            let seller = this.select.get(transaction.seller)
-            seller = User.fromDict(JSON.parse(seller["body"]))
+            const seller_dict = this.select.get(transaction.seller) as {[key: string]: string}
+            let seller = User.fromDict(JSON.parse(seller_dict["body"]))
 
             // Seller remove item, add funds
             seller.removeItem(item, transaction.amount)
@@ -77,44 +68,11 @@ export class UserDatabase {
 
     processUpdates(updates: any[]) {
         updates.forEach(update => {
-            let data = this.select.get(update.user_id)
+            let data = this.select.get(update.user_id) as {[key: string]: string}
             let user = User.fromDict(JSON.parse(data["body"]))
             user.applyOrderUpdate(update)
             this.upsert.run(user.id, JSON.stringify(user))
         })
     }
 
-}
-
-export class TransactionHistory {
-
-    db : Database
-    insert: Statement
-    select: Statement
-    selectAll: Statement
-
-    constructor(memory=false){
-        this.db = memory ? new Database(":memory:") : new Database("db.sqlite", {create: true})
-    }
-
-    initialize() {
-        const query = this.db.query(`create table if not exists Transactions (TransactionID string PRIMARY KEY, body string);`);
-        query.run()
-
-        this.insert = this.db.prepare("INSERT INTO Transactions (TransactionID, buyer, seller, amount, price_per) VALUES ($TransactionID, $buyer, $seller, $amount, $price_per);");
-        this.select = this.db.prepare("SELECT * FROM Transactions WHERE TransactionID == $TransactionID;")
-        this.selectAll = this.db.query("SELECT * FROM Transactions;")
-    }
-
-    insertTransaction(transaction: any) {
-        return this.insert.run(transaction.id, transaction.buyer, transaction.seller, transaction.amount, transaction.price_per)
-    }
-
-    selectTransaction(id: string) {
-        return this.select.run(id)
-    }
-
-    selectAllTransactions() {
-        return this.selectAll.all()
-    }
 }

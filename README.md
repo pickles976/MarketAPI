@@ -64,6 +64,8 @@ The Market API is an object that exposes all the functionality of a market using
 - [x] Transactions should be filled at the bid price
 
 - [ ] Switch to typescript
+    - [x] fix import errors
+    - [ ] Type aliasing for {[key: string]: string}
 - [x] Organize repository
 
 - [ ] Dump Ledger to JSON in Rust
@@ -86,6 +88,8 @@ The Market API is an object that exposes all the functionality of a market using
 - [ ] Test for double-spend
 - [ ] Load tests on Pi
 - [ ] npm install wasm pkg
+
+- [ ] Add transactionality to the market engine core so that we can undo transactions if we encounter a failure
 
 - [ ] Use sqlite to guarantee atomicity
 - [ ] Create decorator? [https://www.geeksforgeeks.org/what-are-decorators-and-how-are-they-used-in-javascript/]

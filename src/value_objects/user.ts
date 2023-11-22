@@ -1,40 +1,20 @@
 import { v4 as uuidv4 } from 'uuid';
+import { Order } from './order';
+import { OrderRequest } from './order_request';
 
-// TODO: Transaction object, OrderRequest object
-export class Order {
-
-    id: string | null
-    user_id: string
-    item: string
-    kind: string
-    amount: number
-    price_per: number
-
-    // TODO: typed dict?
-    static fromDict(data: any) {
-        return new Order(data["user_id"], data["item"], data["kind"], data["amount"], data["price_per"], data["id"])
-    }
-
-    // TODO: why is the ID optional? it breaks other code. Plox fix
-    // ANSWER: the order id is only created after an order has been processed by the market engine. Maybe we should have an OrderRequest class?
-    constructor(user_id: string, item: string, kind: string, amount: number, price_per: number, id:string|null = null){
-        this.id = id
-        this.user_id = user_id
-        this.item = item
-        this.kind = kind
-        this.amount = amount
-        this.price_per = price_per
-    }
-
-}
 
 export class User {
+    /**
+     * User
+     * @param portfolio dictionary of items and their amounts
+     * @param activeOrders dictionary of ids and their associated Order
+     */
 
     name: string
-    id: string | null
+    id: string
     funds: number
-    portfolio: Object
-    activeOrders: Object
+    portfolio: { [key: string]: number }
+    activeOrders: { [key: string]: Order }
 
     constructor(name:string, id:string|null=null) {
         this.name = name
@@ -44,8 +24,7 @@ export class User {
         this.activeOrders = {}
     }
 
-    // TODO: add typed dict
-    static fromDict(data: any) : User{
+    static fromDict(data: {[key: string]: any}) : User{
         let user = new User(data["name"], data["id"])
         user.funds = data["funds"]
         user.portfolio = data["portfolio"]
@@ -61,26 +40,21 @@ export class User {
         this.funds -= amount
     }
 
-    // TODO: fix this
-    addItem(item: number, quantity: number) {
+    addItem(item: string, quantity: number) {
         if (item in this.portfolio) {
-            //@ts-ignore
             this.portfolio[item] += quantity
         } else {
-            //@ts-ignore
             this.portfolio[item] = quantity
         }
     }
 
-    removeItem(item: number, quantity: number) {
-        //@ts-ignore
+    removeItem(item: string, quantity: number) {
         this.portfolio[item] -= quantity
     }
 
-    // TODO: throw a custom exception, also fix the ts-ignore
-    userCanDoOrder(order: Order) {
+    // TODO: throw a custom exception
+    userCanDoOrder(order: OrderRequest) {
         if (order.kind == "SELL") {
-            // @ts-ignore
             return (order.item in this.portfolio && this.portfolio[order.item] >= order.amount)
         }
 
@@ -90,15 +64,13 @@ export class User {
     }
 
     applyOrderUpdate(update: Order) {
-        //@ts-ignore
+
         let order = this.activeOrders[update.id]
         order.amount = update.amount
 
         if (order.amount > 0) {
-            //@ts-ignore
             this.activeOrders[update.id] = order
         } else {
-            //@ts-ignore
             delete this.activeOrders[update.id]
         }
     }

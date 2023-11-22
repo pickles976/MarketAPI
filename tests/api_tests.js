@@ -1,12 +1,11 @@
 import { TradingAPI } from "../src/api";
 import { MarketWrapper } from "../pkg/MarketCore";
-import { UserDatabase } from "../src/sqlite_layer"
-import { Order } from "../src/user"
+import { UserDatabase } from "../src/user_database"
+import { Order } from "../src/value_objects/order"
 
 const errorMsg = "Assertion failed!";
 
 const userDB = new UserDatabase(true)
-userDB.initialize()
 
 const market = MarketWrapper.new()
 
