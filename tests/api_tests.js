@@ -80,4 +80,4 @@ console.assert(api.showAllUsers()[2].funds == 2880.0, "%o", { errorMsg });
 
 console.log("Tests complete")
 
-// TODO: user funds should be tied up by currently active orders
+console.log(market.dump())

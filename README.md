@@ -57,35 +57,24 @@ The Market API is an object that exposes all the functionality of a market using
 
 ## TODO
 
-- [x] Let people query the ledger
-- [x] Let people cancel orders
-- [x] Query bid and ask prices
-- [x] User funds and items should be tied up in orders
-- [x] Transactions should be filled at the bid price
-
-- [x] Switch to typescript
-- [x] fix import errors
-- [x] Type aliasing for {[key: string]: string}
-- [x] Abstract base class for UserDatabase and TransactionDatabase
-- [x] Organize repository
-
-- [ ] Dump Ledger to JSON in Rust
-- [ ] Support JSON dump of Ledger object in wasm
-- [ ] Test from Bun
-
-- [ ] Add timestamps to transaction history
+- [ ] Add integer timestamps to transaction history
 - [ ] Query transactions by timestamp, user, item type
-- [x] Query the ledger for current prices
 
-- [x] Separate concerns out (Market, UserDatabase, TransactionDatabase)
-- [x] Allow depedency injection for API (different market engines, transaction stores, and databases)
-- [ ] REST endpoints for deployment
-
-- [ ] Unit tests (user.js)
+- [ ] Unit tests (do DDD-style methods, properly enforce the relationships)
 - [ ] SQLite level tests
 - [ ] Service layer tests (api.py)
+
+- [ ] Write a program with trading bots
+
+- [ ] REST API 
+    - [ ] User CRUD (create user, get user, view users)
+    - [ ] Order CRUD (create order, cancel order, view orders)
+    - [ ] Transaction querying (query transaction history by time, filter by item type)
 - [ ] Integration tests
 - [ ] Load tests
+
+- [ ] Visualize transactions in webpage
+
 - [ ] Test for double-spend
 - [ ] Load tests on Pi
 - [ ] npm install wasm pkg
