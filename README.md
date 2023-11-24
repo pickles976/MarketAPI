@@ -64,7 +64,11 @@ The Market API is an object that exposes all the functionality of a market using
 - [ ] SQLite level tests
 - [ ] Service layer tests (api.py)
 
-- [ ] Write a program with trading bots
+- [ ] Write a program with trading bots (Use CATAN resources, try to build different structures)
+- [ ] GOAP, STRIPS
+- [ ] https://gamedevelopment.tutsplus.com/goal-oriented-action-planning-for-a-smarter-ai--cms-20793t
+- [ ] https://medium.com/@vedantchaudhari/goal-oriented-action-planning-34035ed40d0b
+- [ ] RoadBot, Village-Bot, City-Bot
 
 - [ ] REST API 
     - [ ] User CRUD (create user, get user, view users)
