@@ -63,6 +63,7 @@ The Market API is an object that exposes all the functionality of a market using
 - [ ] Unit tests (do DDD-style methods, properly enforce the relationships)
 - [ ] SQLite level tests
 - [ ] Service layer tests (api.py)
+- [ ] Test how fast we can do 10k transactions, 100k?
 
 - [ ] Write a program with trading bots (Use CATAN resources, try to build different structures)
 - [ ] GOAP, STRIPS
