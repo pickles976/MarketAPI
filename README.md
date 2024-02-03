@@ -57,6 +57,14 @@ The Market API is an object that exposes all the functionality of a market using
 
 ## TODO
 
+### GOAP
+- [ ] Write a program with trading bots (Use CATAN resources, try to build different structures)
+- [ ] GOAP, STRIPS
+- [ ] https://gamedevelopment.tutsplus.com/goal-oriented-action-planning-for-a-smarter-ai--cms-20793t
+- [ ] https://medium.com/@vedantchaudhari/goal-oriented-action-planning-34035ed40d0b
+- [ ] RoadBot, Village-Bot, City-Bot
+
+### CLEANUP
 - [ ] Add integer timestamps to transaction history
 - [ ] Query transactions by timestamp, user, item type
 
@@ -65,12 +73,7 @@ The Market API is an object that exposes all the functionality of a market using
 - [ ] Service layer tests (api.py)
 - [ ] Test how fast we can do 10k transactions, 100k?
 
-- [ ] Write a program with trading bots (Use CATAN resources, try to build different structures)
-- [ ] GOAP, STRIPS
-- [ ] https://gamedevelopment.tutsplus.com/goal-oriented-action-planning-for-a-smarter-ai--cms-20793t
-- [ ] https://medium.com/@vedantchaudhari/goal-oriented-action-planning-34035ed40d0b
-- [ ] RoadBot, Village-Bot, City-Bot
-
+### API
 - [ ] REST API 
     - [ ] User CRUD (create user, get user, view users)
     - [ ] Order CRUD (create order, cancel order, view orders)
@@ -78,14 +81,15 @@ The Market API is an object that exposes all the functionality of a market using
 - [ ] Integration tests
 - [ ] Load tests
 
-- [ ] Visualize transactions in webpage
+### WEBAPP
+- [ ] ledger browser
+- [ ] view transaction history
+- [ ] view price history
 
-- [ ] Test for double-spend
 - [ ] Load tests on Pi
 - [ ] npm install wasm pkg
 
-- [ ] Add transactionality to the market engine core so that we can undo transactions if we encounter a failure
-- [ ] Try out alternative backends for user database that support transactionality
+1.0 FINISHED
 
 
 ## End Goal
