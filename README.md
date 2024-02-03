@@ -58,11 +58,11 @@ The Market API is an object that exposes all the functionality of a market using
 ## TODO
 
 ### GOAP
+- [x] Learn about GOAP and STRIPS
+- [x] Implement basic GOAP system in Javascript
+- [ ] Port to le typescript
+- [ ] Figure out a framework to represent trading problems in a GOAP-compatible way
 - [ ] Write a program with trading bots (Use CATAN resources, try to build different structures)
-- [ ] GOAP, STRIPS
-- [ ] https://gamedevelopment.tutsplus.com/goal-oriented-action-planning-for-a-smarter-ai--cms-20793t
-- [ ] https://medium.com/@vedantchaudhari/goal-oriented-action-planning-34035ed40d0b
-- [ ] RoadBot, Village-Bot, City-Bot
 
 ### CLEANUP
 - [ ] Add integer timestamps to transaction history
