@@ -57,21 +57,20 @@ The Market API is an object that exposes all the functionality of a market using
 
 ## TODO
 
-### GOAP
-- [x] Learn about GOAP and STRIPS
-- [x] Implement basic GOAP system in Javascript
-- [ ] Port to le typescript
-- [ ] Figure out a framework to represent trading problems in a GOAP-compatible way
-- [ ] Write a program with trading bots (Use CATAN resources, try to build different structures)
-
 ### CLEANUP
-- [ ] Add integer timestamps to transaction history
-- [ ] Query transactions by timestamp, user, item type
-
 - [ ] Unit tests (do DDD-style methods, properly enforce the relationships)
 - [ ] SQLite level tests
 - [ ] Service layer tests (api.py)
 - [ ] Test how fast we can do 10k transactions, 100k?
+
+### TRANSACTIONS
+- [ ] Add integer timestamps to transaction history
+- [ ] Query transactions by timestamp, user, item type
+
+### WEBAPP
+- [ ] ledger browser
+- [ ] view transaction history
+- [ ] view price history
 
 ### API
 - [ ] REST API 
@@ -80,14 +79,6 @@ The Market API is an object that exposes all the functionality of a market using
     - [ ] Transaction querying (query transaction history by time, filter by item type)
 - [ ] Integration tests
 - [ ] Load tests
-
-### WEBAPP
-- [ ] ledger browser
-- [ ] view transaction history
-- [ ] view price history
-
-- [ ] Load tests on Pi
-- [ ] npm install wasm pkg
 
 1.0 FINISHED
 
